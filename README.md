@@ -1,2 +1,2 @@
 # GGMprojpred
-Bayesian graphical models estimated with projection predictive selection t
+Bayesian graphical models estimated with projection predictive selection
