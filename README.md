@@ -1,2 +1,4 @@
 # GGMprojpred
-Bayesian graphical models estimated with projection predictive selection
+This package estimtates Bayesian graphical models estimated with projection predictive selection.
+
+
