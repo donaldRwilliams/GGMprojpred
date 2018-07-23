@@ -37,6 +37,9 @@ plot_graph(fit$pcor_mat, layout=layout_in_circle, vertex.color = "white")
 compare(fit$adj_mat, main$G)
 }
 \references{
+Piironen, J., & Vehtari, A. (2017). Comparison of Bayesian predictive methods for model selection. Statistics and Computing, 27(3), 711-735.
+\href{https://link.springer.com/article/10.1007/s11222-016-9649-y}{https://link.springer.com/article/10.1007/s11222-016-9649-y}
+
 Rubin, D. B. (1981). The bayesian bootstrap. The annals of statistics, 130-134. \href{https://www.jstor.org/stable/2240875}{https://www.jstor.org/stable/2240875}
 
 Williams, D. R., Piironen, J., Vehtari, A., & Rast, P. (2018). Bayesian Estimation of Gaussian Graphical Models with Projection Predictive Selection. arXiv preprint arXiv:1801.05725.
