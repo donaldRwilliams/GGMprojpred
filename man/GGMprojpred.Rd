@@ -34,6 +34,7 @@ X <- main$data
 
 fit <- GGMprojpred(X, n_cl = detectCores() - 1, type = "hs", iter = 1000)
 plot_graph(fit$pcor_mat, layout=layout_in_circle, vertex.color = "white")
+compare(fit$adj_mat, main$G)
 }
 \references{
 Rubin, D. B. (1981). The bayesian bootstrap. The annals of statistics, 130-134. \href{https://www.jstor.org/stable/2240875}{https://www.jstor.org/stable/2240875}

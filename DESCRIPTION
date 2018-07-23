@@ -1,14 +1,17 @@
 Package: GGMprojpred 
-Title: What the Package Does (one line, title case)
+Title: GGMprojpred
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.3.3)
+Authors@R: person("Donald", "Williams", email = "drwwilliams@ucdavis.edu", role = c("aut", "cre"))
+Description: This packaeg estimates Bayesian Gaussian graphical models with projection predictive selection. There are also functions to plot the 
+  estimated graph, in addition to the ability to compare the estimated graph to the true graph. For the latter performance measures include Specificity,
+  Sensitivty, MCC, F1-Scores, as well as various loss functions including Stein-loss, KL-divergence, Quadratic loss, 
+ and mean squared error for the partial correlation matrix.
+Depends: R (>= 3.4.2), foreach, doSNOW, projpred, horseshoe, parallel, BDgraph, igraph, Matrix, parcor
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Imports: foreach, doSNOW, projpred, horseshoe, parallel, 
+Imports: foreach, doSNOW, projpred, horseshoe, parallel, BDgraph, igraph, Matrix, parcor
 
 
 

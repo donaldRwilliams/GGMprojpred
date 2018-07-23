@@ -1,5 +1,5 @@
 # intial fit (re projected for OR rule)
-int_proj <- function(X, n_cl){
+hs_proj <- function(X, n_cl, iter){
   cl <- parallel::makeCluster(n_cl)
   doSNOW::registerDoSNOW(cl)
   colnames(X) <- 1:ncol(X)
@@ -10,12 +10,8 @@ int_proj <- function(X, n_cl){
                        X_new <- X[,-i]
                        y <- X[,i]
 
-                       #if(type == "hs"){
-                        # fit <- node_fit(X = X_new, y = y)
-                       #}
-                       #if(type == "bb"){
-                         fit <- bb_fit(X = X_new, y = y, sims = 500)
-                       #}
+                       fit <- node_fit(X = X_new, y = y, iter = iter)
+
                        selected <- project_node_fit(X_new, y, beta = as.matrix(fit$beta), sigma = fit$sigma)
 
                      }
@@ -46,19 +42,60 @@ int_proj <- function(X, n_cl){
 }
 
 
-node_fit <- function(X, y, burn = 1000, nmc = 1000){
+bb_proj <- function(X, n_cl, iter){
+  cl <- parallel::makeCluster(n_cl)
+  doSNOW::registerDoSNOW(cl)
+  colnames(X) <- 1:ncol(X)
+  X <- scale(X, scale = F)
+  par_fit <- foreach(i = 1:ncol(X), .export = c("node_fit", "project_node_fit",
+                                                "bb_fit", "post_func"),
+                     .packages = c("horseshoe", "projpred")) %dopar% {
+                       X_new <- X[,-i]
+                       y <- X[,i]
+
+
+
+
+                       fit <- bb_fit(X = X_new, y = y, iter)
+
+                       selected <- project_node_fit(X_new, y, beta = as.matrix(fit$beta), sigma = fit$sigma)
+
+                     }
+  parallel::stopCluster(cl)
+
+  mat_select <- mat_all <- matrix(0, ncol = ncol(X), nrow = ncol(X))
+  colnames(mat_select) <- 1:ncol(X)
+
+  for(i in 1:ncol(X)){
+    if(!is.null(par_fit[[i]]$mu_sel)){
+      mat_select[i, ] <- rep(0,ncol(X))
+    }
+    if(!is.null(par_fit[[i]]$mu_sel)){
+      mat_select[i, names(par_fit[[i]]$mu_sel)] <- par_fit[[i]]$mu_sel
+    }
+
+  }
+  fit_cv <- list()
+  for(i in 1:ncol(X)){
+    fit_cv[[i]] <- par_fit[[i]]$fit_cv
+
+  }
+  fit_sigma <- list()
+  for(i in 1:ncol(X)){
+    fit_sigma[[i]] <- par_fit[[i]]$sigma
+  }
+  list(mat_sel = parcor::Beta2parcor(mat_select), beta_mat = mat_select, fit_cv = fit_cv, fit_sigma = fit_sigma)
+}
+
+
+
+node_fit <- function(X, y, burn = 1000, iter){
   fit <- horseshoe(y = y, X = X, method.tau = "halfCauchy", burn = burn,
-                   method.sigma = "Jeffreys", nmc = nmc)
+                   method.sigma = "Jeffreys", nmc = iter)
   list(beta = t(fit$BetaSamples), sigma = sqrt(fit$Sigma2Samples))
 }
 
 
-bb_fit <- function(X, y, sims){
-
-  rexp(length(y))
-
-
-}
 
 
 
@@ -81,9 +118,9 @@ project_node_fit <- function(X, y, beta, sigma){
 
 
 
-bb_fit <- function(X, y, sims){
+bb_fit <- function(X, y, iter){
 
-  estimates <- do.call(rbind.data.frame, replicate(sims, post_func(X, y), simplify = F))
+  estimates <- do.call(rbind.data.frame, replicate(iter, post_func(X, y), simplify = F))
   list(beta = estimates[,1:ncol(X)], sigma = estimates[,ncol(estimates)])
 
 }
