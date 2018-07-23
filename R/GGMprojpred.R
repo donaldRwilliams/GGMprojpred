@@ -1,3 +1,16 @@
+#'  GGMprojpred
+#' @description Estimate Gaussian graphical models with projection predictive selection
+#' @param X n by p data matrix
+#' @param n_cl number of clusters for parallel
+#' @param type regularized (using the horeshoe prior distribution) or non-regularized (Bayesian bootstrap with OLS)
+#' @param iter number of saved posterior samples
+#'
+#' @return
+#'
+#' @examples
+#' GGMprojpred()
+#' @export
+
 GGMprojpred <- function(X, n_cl, type, iter){
 
   # intiial fitting
