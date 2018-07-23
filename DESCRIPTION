@@ -11,7 +11,7 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Imports: foreach, doSNOW, projpred, horseshoe, parallel, BDgraph, igraph, Matrix (>= 1.2-11), parcor
+Imports: foreach, doSNOW, projpred, horseshoe, parallel, BDgraph, igraph, Matrix (>= 1.2.13), parcor
 
 
 
