@@ -11,16 +11,33 @@ GGMprojpred(X, n_cl, type, iter)
 
 \item{n_cl}{number of clusters for parallel}
 
-\item{type}{regularized (using the horeshoe prior distribution) or non-regularized (Bayesian bootstrap with OLS)}
+\item{type}{regularized (using the horeshoe prior distribution) or non-regularized (Bayesian bootstrap with least squares)}
 
 \item{iter}{number of saved posterior samples}
 }
 \value{
+pcor_mat estimated partial correlation matrix
 
+inv_cov  estimated inverse covariance matrix
+
+adj_mat  adjacenty matrix
 }
 \description{
 Estimate Gaussian graphical models with projection predictive selection
 }
 \examples{
-GGMprojpred()
+library(BDgraph)
+
+# generate AR-2 graph
+main <- bdgraph.sim(p = 100, n = 50, graph = "AR2")
+X <- main$data
+
+fit <- GGMprojpred(X, n_cl = detectCores() - 1, type = "hs", iter = 1000)
+plot_graph(fit$pcor_mat, layout=layout_in_circle, vertex.color = "white")
+}
+\references{
+Rubin, D. B. (1981). The bayesian bootstrap. The annals of statistics, 130-134. \href{https://www.jstor.org/stable/2240875}{https://www.jstor.org/stable/2240875}
+
+Williams, D. R., Piironen, J., Vehtari, A., & Rast, P. (2018). Bayesian Estimation of Gaussian Graphical Models with Projection Predictive Selection. arXiv preprint arXiv:1801.05725.
+\href{https://arxiv.org/abs/1801.05725}{https://arxiv.org/abs/1801.05725}
 }
