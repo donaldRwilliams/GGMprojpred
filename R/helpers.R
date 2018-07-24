@@ -180,12 +180,8 @@ re_project <- function(x, fit_cv){
       selected <- unique(c(nm, temp_chr))
     }
 
-
-    nv_max <- min(ncol(select_mat), floor(0.4*nrow(temp_fit$x)))
-    if(nv_max > (ncol(select_mat) - 1 )) {nv_max <- ncol(select_mat) - 1}
-    #if(nv_max > 20)
     # project
-    beta_temp <- as.data.frame(t(project(temp_fit, nv = nv_max)$beta)[, as.character(selected)])
+    beta_temp <- as.data.frame(t(project(temp_fit, nv = temp_fit$varsel$nv_max)$beta)[, as.character(selected)])
 
     # name projections
     colnames(beta_temp) <- selected
