@@ -4,16 +4,18 @@
 \alias{GGMprojpred}
 \title{GGMprojpred}
 \usage{
-GGMprojpred(X, n_cl, type, iter)
+GGMprojpred(X, n_cl, iter, threshold)
 }
 \arguments{
 \item{X}{n by p data matrix}
 
 \item{n_cl}{number of clusters for parallel}
 
-\item{type}{regularized (using the horeshoe prior distribution) or non-regularized (Bayesian bootstrap with least squares)}
-
 \item{iter}{number of saved posterior samples}
+
+\item{threshold}{if TRUE a threhold is applied after fitting (see Details)}
+
+\item{type}{regularized (using the horeshoe prior distribution)}
 }
 \value{
 pcor_mat estimated partial correlation matrix
@@ -24,6 +26,13 @@ adj_mat  adjacenty matrix
 }
 \description{
 Estimate Gaussian graphical models with projection predictive selection
+}
+\details{
+Thresholds are often used after a graphical structure has been estiamted, where small values are set to zero.
+From our perspective, this is an ad-hoc "fix" to inrease specificity in which the decision theroretic jusfication for
+predictive covariance selection is compromised. Nonetheless, for those wishing to lower the false positive rate (and also decrease power),
+the threshold argement can be set to TRUE. The current threhold is based the Fisher-z tranformed standard error sqrt(1/ (n - s - 3)), with s as
+the number of variables controlled for (p - 1). Values less than 1.96 * SE are set to zero.
 }
 \examples{
 library(BDgraph)
