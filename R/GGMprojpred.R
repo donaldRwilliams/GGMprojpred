@@ -29,23 +29,15 @@
 #' Williams, D. R., Piironen, J., Vehtari, A., & Rast, P. (2018). Bayesian Estimation of Gaussian Graphical Models with Projection Predictive Selection. arXiv preprint arXiv:1801.05725.
 #' \href{https://arxiv.org/abs/1801.05725}{https://arxiv.org/abs/1801.05725}
 
-GGMprojpred <- function(X, n_cl, type, iter){
+GGMprojpred <- function(X, n_cl, iter){
 
   # intiial fitting
-  if(type == "bb" && ncol(X) >= nrow(X)){
-    stop("The Bayesian bootstrap, at this time, can only be used when the p < n.")
-  }
-
-  # intiial fitting
-  if(type == "hs"){
     fit <- hs_proj(X, n_cl, iter)
-  }
-  if(type == "bb"){
-    fit <- bb_proj(X, n_cl, iter)
-  }
 
-  # reproject
-  mats <- re_project(fit$beta_mat, fit$fit_cv)
+
+
+   # reproject
+   mats <- re_project(fit$beta_mat, fit$fit_cv)
 
   # selected variables using the "or-rule"
   or_select <- ifelse(mats$pcor_or == 0, 0, 1)
